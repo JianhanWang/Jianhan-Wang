@@ -6,17 +6,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jgraph.graph.Edge;
 import org.jgrapht.*;
 import org.jgrapht.graph.*;
 
 public class HW8 {
-    public static WeightedGraph<String, DefaultWeightedEdge> wg =
+    static WeightedGraph<String, DefaultWeightedEdge> wg =
             new WeightedMultigraph<>(DefaultWeightedEdge.class);
+    static int vertices = 0;
+    static int edges = 0;
 
-    static int edge = 0;
-
-    public static boolean isNumeric(String s) {
-        return s.matches("[-+]?\\d*\\.?\\d+");
+    public static boolean isInteger(String s) {
+        if(s.matches(".*\\d.*")){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     public static void storeData() {
@@ -26,27 +31,35 @@ public class HW8 {
             List <String> cities = new ArrayList<>();
 
             int i;
-            int num = 0;
+            int k = 0;
 
             while ((contains = read.readLine()) != null) {
                 String result[] = contains.split(",");
 
-                if(!isNumeric(result[0])){
+                if(!isInteger(result[0])){
                     cities.add(result[0]);
                     wg.addVertex(result[0]);
-                    num = 0;
+                    System.out.println(result[0]);
+                    k = 0;
+                    vertices++;
                 }
-                else {
+                else{
                     String distance[] = contains.split(" ");
                     double miles[] = new double[distance.length];
 
                     for(int j = 0; j < distance.length; j++) {
-                        miles[j] = Double.parseDouble(distance[j]);
+                        if(Double.parseDouble(distance[j]) != 0){
+                            miles[j] = Double.parseDouble(distance[j]);
+                        }
                     }
 
-                    for(i = num; i < cities.size();i++){
-                        wg.addEdge(cities.get(cities.size()-1), cities.get(i));
-                        wg.setEdgeWeight(wg.getEdge(cities.get(cities.size()-1), cities.get(i)), miles[i]);
+                    for(i = 0; i < miles.length; i++){
+                        System.out.println("  k" + k +"  city: " + cities.size());
+                        wg.addEdge(cities.get(cities.size() - 1), cities.get(k));
+                        wg.setEdgeWeight(wg.getEdge(cities.get(cities.size() - 1), cities.get(k)), miles[i]);
+                        System.out.println(" " + wg.getEdgeWeight(wg.getEdge(cities.get(cities.size() - 1), cities.get(k))));
+                        k++;
+                        edges++;
                     }
                 }
             }
@@ -57,8 +70,13 @@ public class HW8 {
         }
     }
 
+    public static void Boruvkas(WeightedGraph G, int n, int m){
+        List<Edge> mst = new ArrayList<>();
+        for(int i = 1; i < n && mst.size() < n - 1; i = i + i){
+        }
+    }
     public static void main(String[] args) {
         storeData();
-        System.out.println(edge);
+
     }
 }
